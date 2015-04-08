@@ -12,7 +12,7 @@ group :development, :test do
   gem 'byebug'
   gem 'data_mapper'
   gem 'dm-postgres-adapter'
-  gem 'database-cleaner'
+  gem 'database_cleaner'
 
   group :test do
     gem 'rspec'
