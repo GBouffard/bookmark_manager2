@@ -61,8 +61,8 @@ post '/users' do
     session[:user_id] = @user.id
     redirect to('/')
   else
-    flash[:notice] = 'Sorry, your password do not match'
-    erb:'users/new'
+    flash.now[:errors] = @user.errors.full_messages
+    erb :'users/new'
   end
 end
 
