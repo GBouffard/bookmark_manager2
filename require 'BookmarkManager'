@@ -1,0 +1,2 @@
+require 'BookmarkManager'
+run BookmarkManager.new
