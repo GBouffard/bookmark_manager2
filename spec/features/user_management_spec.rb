@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'SessionHelpers'
 
 feature 'User signs up' do
 
@@ -29,7 +30,7 @@ end
     fill_in :password_confirmation, with: password_confirmation
     click_button 'Sign up'
   end
-
+end
 feature 'User signs in' do
 
   before(:each) do
@@ -74,7 +75,5 @@ feature 'User signs out' do
     expect(page).to have_content('Good bye!') # where does this message go?
     expect(page).not_to have_content('Welcome, test@test.com')
   end
-
-end
 
 end
