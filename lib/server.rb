@@ -82,4 +82,16 @@ class BookmarkManager < Sinatra::Base
     redirect '/'
   end
 
+  get '/sessions/recover_password' do
+    erb :"sessions/recover_password"
+  end
+  
+  post '/sessions/recover_password' do
+    user = User.recover_password(params[:email])
+  end
+   
+  get 'users/recover_password/:token' do
+    user = User.first(password_token: token)
+  end
+ 
 end

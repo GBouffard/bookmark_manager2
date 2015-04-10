@@ -1,0 +1,17 @@
+<form action="/sessions/recover_password">
+  <p>
+    <input type="hidden" name="token" value="<%= params[:token] %>">
+  </p>
+
+  <p>
+    <input type="text" name="email" placeholder="Email address">
+  </p>
+
+  <p>
+    <input type="text" name="password" placeholder="Password">
+  </p>
+
+  <p>
+    <input type="submit" value="Sign in" class="button">
+  </p>
+</form>

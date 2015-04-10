@@ -55,7 +55,6 @@ feature 'User signs in' do
 
   scenario 'test sign in' do
     visit '/sessions/new'
-    save_and_open_page
     expect(page).to have_content('sign in')
   end
 
@@ -81,5 +80,13 @@ feature 'User signs out' do
     expect(page).to have_content('Good bye!') # where does this message go?
     expect(page).not_to have_content('Welcome, test@test.com')
   end
+
+feature "User forgets his password" do
+  scenario "when user requests a new password" do
+    visit '/sessions/new'
+    click_link('Forgot password?')
+    expect(page).to have_content('Please give your email to contact you')
+  end
+end
 
 end
