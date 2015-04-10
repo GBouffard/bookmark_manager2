@@ -1,28 +1,18 @@
-require 'data_mapper'
 require 'sinatra/base'
-require './lib/tag'
-require './lib/user'
 require 'rack-flash'
 require './lib/SessionHelpers'
+require './lib/data_base_setup'
 
-include SessionHelpers
-
-env = ENV['RACK_ENV'] || 'development'
-
-DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
-
-require './lib/link' 
-
-DataMapper.finalize
-
-DataMapper.auto_upgrade!
+require_relative 'application_helpers'
 
 class BookmarkManager < Sinatra::Base
 
-enable :sessions
-use Rack::Flash
-use Rack::MethodOverride
-set :session_secret, 'super secret'
+  include ApplicationHelpers
+
+  enable :sessions
+  use Rack::Flash
+  use Rack::MethodOverride
+  set :session_secret, 'super secret'
 
   post '/set-flash' do
     flash[:notice] = "Thanks for signing up!"
@@ -58,39 +48,38 @@ set :session_secret, 'super secret'
     erb :'users/new'
   end
 
-post '/users' do
-  @user = User.create(email: params[:email],
-                     password: params[:password], password_confirmation:params[:password_confirmation])
-  if @user.save
-    session[:user_id] = @user.id
-    redirect to('/')
-  else
-    flash.now[:errors] = @user.errors.full_messages
-    erb :'users/new'
+  post '/users' do
+    @user = User.create(email: params[:email],
+                       password: params[:password], password_confirmation:params[:password_confirmation])
+    if @user.save
+      session[:user_id] = @user.id
+      redirect to('/')
+    else
+      flash.now[:errors] = @user.errors.full_messages
+      erb :'users/new'
+    end
   end
-end
 
-helpers do
-
-  def current_user
-    @current_user ||= User.get(session[:user_id]) if session[:user_id]
-  end
-end
-
-get '/sessions/new' do
-  erb :'sessions/new'
-end
-
-post '/sessions' do
-  email, password = params[:email], params[:password]
-  user = User.authenticate(email, password)
-  if user
-    session[:user_id] = user.id
-    redirect to('/')
-  else
-    flash[:errors] = ['The email or password is incorrect']
+  get '/sessions/new' do
     erb :'sessions/new'
   end
-end
+
+  post '/sessions' do
+    email, password = params[:email], params[:password]
+    user = User.authenticate(email, password)
+    if user
+      session[:user_id] = user.id
+      redirect to('/')
+    else
+      flash[:errors] = ['The email or password is incorrect']
+      erb :'sessions/new'
+    end
+  end
+
+  delete '/sessions' do
+    session.clear
+    flash[:notice] = 'Good bye!'
+    redirect '/'
+  end
 
 end
