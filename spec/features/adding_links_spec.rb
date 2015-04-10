@@ -11,9 +11,7 @@ feature 'User adds a new link' do
 
   scenario 'with a few tags' do
     visit '/'
-    add_link('http://www.makersacademy.com/',
-             'Makers Academy',
-             %w(education ruby))
+    add_link('http://www.makersacademy.com/', 'Makers Academy', %w(education ruby))
     link = Link.first
     expect(link.tags.map(&:text)).to include 'education', 'ruby'
   end

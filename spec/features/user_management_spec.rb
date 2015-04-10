@@ -2,24 +2,23 @@ require 'spec_helper'
 require 'SessionHelpers'
 
 feature 'User signs up' do
-
-scenario 'when being a new user visiting the site' do
-    expect{ sign_up }.to change(User, :count).by(1)
+  scenario 'when being a new user visiting the site' do
+    expect { sign_up }.to change(User, :count).by(1)
     expect(page).to have_content('Welcome, alice@example.com')
     expect(User.first.email).to eq('alice@example.com')
   end
 
-scenario 'with a password that does not match' do
+  scenario 'with a password that does not match' do
     expect { sign_up('a@a.com', 'pass', 'wrong') }.to change(User, :count).by(0)
     expect(current_path).to eq('/users')
     expect(page).to have_content('Password does not match the confirmation')
   end
 
-scenario 'with an email that is already registered' do
-  expect { sign_up }.to change(User, :count).by(1)
-  expect { sign_up }.to change(User, :count).by(0)
-  expect(page).to have_content('This email is already taken')
-end
+  scenario 'with an email that is already registered' do
+    expect { sign_up }.to change(User, :count).by(1)
+    expect { sign_up }.to change(User, :count).by(0)
+    expect(page).to have_content('This email is already taken')
+  end
 
   def sign_up(email = 'alice@example.com',
               password = 'oranges!',
@@ -31,8 +30,8 @@ end
     click_button 'Sign up'
   end
 end
-feature 'User signs in' do
 
+feature 'User signs in' do
   before(:each) do
     User.create(email: 'test@test.com',
                 password: 'test',
@@ -67,11 +66,8 @@ feature 'User signs in' do
 end
 
 feature 'User signs out' do
-
   before(:each) do
-    User.create(email: 'test@test.com',
-                password: 'test',
-                password_confirmation: 'test')
+    User.create(email: 'test@test.com', password: 'test', password_confirmation: 'test')
   end
 
   scenario 'while being signed in' do
@@ -81,12 +77,11 @@ feature 'User signs out' do
     expect(page).not_to have_content('Welcome, test@test.com')
   end
 
-feature "User forgets his password" do
-  scenario "when user requests a new password" do
-    visit '/sessions/new'
-    click_link('Forgot password?')
-    expect(page).to have_content('Please give your email to contact you')
+  feature 'User forgets his password' do
+    scenario 'when user requests a new password' do
+      visit '/sessions/new'
+      click_link('Forgot password?')
+      expect(page).to have_content('Please enter your email')
+    end
   end
-end
-
 end

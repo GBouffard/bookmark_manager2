@@ -3,21 +3,20 @@ source 'https://rubygems.org'
 gem 'sinatra'
 
 group :development, :test do
+  gem 'bcrypt-ruby'
+  gem 'byebug'
   gem 'capybara'
   gem 'cucumber'
   gem 'cucumber-sinatra'
+  gem 'data_mapper'
+  gem 'database_cleaner'
+  gem 'dm-postgres-adapter'
   gem 'launchy'
+  gem 'rack-flash3'
   gem 'rspec'
   gem 'shotgun'
-  gem 'byebug'
-  gem 'data_mapper'
-  gem 'dm-postgres-adapter'
-  gem 'database_cleaner'
-  gem 'bcrypt-ruby'
-  gem 'rack-flash3'
 
   group :test do
     gem 'rspec'
   end
-
 end

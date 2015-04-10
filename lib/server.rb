@@ -6,7 +6,6 @@ require './lib/data_base_setup'
 require_relative 'application_helpers'
 
 class BookmarkManager < Sinatra::Base
-
   include ApplicationHelpers
 
   enable :sessions
@@ -15,9 +14,9 @@ class BookmarkManager < Sinatra::Base
   set :session_secret, 'super secret'
 
   post '/set-flash' do
-    flash[:notice] = "Thanks for signing up!"
+    flash[:notice] = 'Thanks for signing up!'
     flash[:notice]
-    flash.now[:notice] = "Thanks for signing up!"
+    flash.now[:notice] = 'Thanks for signing up!'
   end
 
   get '/' do
@@ -28,12 +27,10 @@ class BookmarkManager < Sinatra::Base
   post '/links' do
     url = params['url']
     title = params['title']
-    
     tags = params['tags'].split(' ').map do |tag|
-    Tag.first_or_create(text: tag)
-      end
-      Link.create(url: url, title: title, tags: tags)
-
+      Tag.first_or_create(text: tag)
+    end
+    Link.create(url: url, title: title, tags: tags)
     redirect to('/')
   end
 
@@ -50,7 +47,8 @@ class BookmarkManager < Sinatra::Base
 
   post '/users' do
     @user = User.create(email: params[:email],
-                       password: params[:password], password_confirmation:params[:password_confirmation])
+                        password: params[:password],
+                        password_confirmation: params[:password_confirmation])
     if @user.save
       session[:user_id] = @user.id
       redirect to('/')
@@ -85,13 +83,12 @@ class BookmarkManager < Sinatra::Base
   get '/sessions/recover_password' do
     erb :"sessions/recover_password"
   end
-  
+
   post '/sessions/recover_password' do
-    user = User.recover_password(params[:email])
+    User.recover_password(params[:email])
   end
-   
+
   get 'users/recover_password/:token' do
-    user = User.first(password_token: token)
+    User.first(password_token: token)
   end
- 
 end
