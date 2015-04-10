@@ -3,7 +3,9 @@ require 'sinatra/base'
 require './lib/tag'
 require './lib/user'
 require 'rack-flash'
-require 'SessionHelpers'
+require './lib/SessionHelpers'
+
+include SessionHelpers
 
 env = ENV['RACK_ENV'] || 'development'
 
@@ -20,7 +22,7 @@ class BookmarkManager < Sinatra::Base
 enable :sessions
 use Rack::Flash
 use Rack::MethodOverride
-set :sessions_secret, 'super secret'
+set :session_secret, 'super secret'
 
   post '/set-flash' do
     flash[:notice] = "Thanks for signing up!"

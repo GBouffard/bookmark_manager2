@@ -53,6 +53,12 @@ feature 'User signs in' do
     expect(page).not_to have_content('Welcome, test@test.com')
   end
 
+  scenario 'test sign in' do
+    visit '/sessions/new'
+    save_and_open_page
+    expect(page).to have_content('sign in')
+  end
+
   def sign_in(email, password)
     visit '/sessions/new'
     fill_in 'email', with: email
